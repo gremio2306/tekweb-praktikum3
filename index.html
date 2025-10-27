@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>To-Do App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            transition: background-color 0.3s;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+        }
+        .container {
+            width: 400px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 20px 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            margin-bottom: 20px;
+        }
+        .top-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .top-controls input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+        .top-controls button {
+            padding: 10px 15px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .top-controls button:hover {
+            background-color: #45a049;
+        }
+        .feature-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 8px;
+            background: #f0f0f0;
+            border-radius: 6px;
+        }
+        select, input[type="color"] {
+            padding: 5px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+        #taskList {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        #taskList li {
+            padding: 10px 12px;
+            border-bottom: 1px solid #ddd;
+            position: relative;
+        }
+        #taskList li:hover {
+            background: #f9f9f9;
+        }
+        .close {
+            color: red;
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>My To-Do List</h2>
+        <div class="top-controls">
+            <input type="text" id="newTask" placeholder="Add a new task...">
+            <button onclick="addTask()">Add</button>
+        </div>
+        <div class="feature-bar">
+            <div>🎨 <input type="color" id="bgColor" onchange="changeColor()"></div>
+            <div>🔤 
+                <select id="fontSelect" onchange="changeFont()">
+                    <option value="Arial, sans-serif">Arial</option>
+                    <option value="'Courier New', monospace">Courier New</option>
+                    <option value="'Times New Roman', serif">Times New Roman</option>
+                    <option value="'Comic Sans MS', cursive">Comic Sans</option>
+                    <option value="'Poppins', sans-serif">Poppins</option>
+                </select>
+            </div>
+        </div>
+        <ul id="taskList"></ul>
+    </div>
+    <script>
+        function addTask() {
+            let taskInput = document.getElementById("newTask");
+            let taskValue = taskInput.value.trim();
+            if (taskValue === "") {
+                alert("Please enter a task!");
+                return;
+            }
+            let li = document.createElement("li");
+            li.textContent = taskValue;
+            li.ondblclick = function() {
+                editTask(this);
+            };
+            let span = document.createElement("span");
+            span.textContent = "×";
+            span.className = "close";
+            span.onclick = function() {
+                deleteTask(this);
+            };
+            li.appendChild(span);
+            document.getElementById("taskList").appendChild(li);
+            taskInput.value = "";
+        }
+        function deleteTask(element) {
+            element.parentElement.remove();
+        }
+        function editTask(element) {
+            let newText = prompt("Edit your task:", element.firstChild.textContent);
+            if (newText !== null && newText.trim() !== "") {
+                element.firstChild.textContent = newText.trim();
+            }
+        }
+        function changeColor() {
+            let color = document.getElementById("bgColor").value;
+            document.body.style.backgroundColor = color;
+        }
+        function changeFont() {
+            let selectedFont = document.getElementById("fontSelect").value;
+            document.body.style.fontFamily = selectedFont;
+        }
+    </script>
+</body>
+</html>
